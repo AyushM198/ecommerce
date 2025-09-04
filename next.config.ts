@@ -1,21 +1,18 @@
 import type { NextConfig } from "next";
 import path from "path";
+import "./src/lib/env"; // ✅ validate env vars on build
 
 const nextConfig: NextConfig = {
-  // Needed for Neon serverless driver
   serverExternalPackages: ["@neondatabase/serverless"],
 
-  // ✅ Ignore lint errors during build
   eslint: {
     ignoreDuringBuilds: true,
   },
 
-  // ✅ Ignore type errors during build
   typescript: {
     ignoreBuildErrors: true,
   },
 
-  // ✅ Allow "@/..." imports to resolve from /src
   webpack: (config) => {
     config.resolve.alias = {
       ...config.resolve.alias,
@@ -23,6 +20,9 @@ const nextConfig: NextConfig = {
     };
     return config;
   },
+
+  productionBrowserSourceMaps: true,
+  reactStrictMode: true,
 };
 
 export default nextConfig;
