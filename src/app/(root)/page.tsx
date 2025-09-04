@@ -3,7 +3,7 @@ import Card from "../../components/Cards";
 import { getAllProducts } from "@/lib/actions/product";
 
 
-  const { products, totalCount } = await getAllProducts({ limit: 6 });
+  const { products,  } = await getAllProducts({ limit: 6 });
 
 
 const Home = () => {

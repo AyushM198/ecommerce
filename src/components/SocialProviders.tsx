@@ -1,4 +1,4 @@
-import { signUp } from "@/lib/auth/actions";
+// import { signUp } from "@/lib/auth/actions";
 import Image from "next/image";
 
 type Props = { variant?: "sign-in" | "sign-up" };

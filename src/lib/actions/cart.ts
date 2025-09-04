@@ -303,8 +303,8 @@ import { products } from "@/lib/db/schema/products";
 import { colors } from "@/lib/db/schema/filters/colors";
 import { sizes } from "@/lib/db/schema/filters/sizes";
 import { productImages } from "@/lib/db/schema/images";
-import { guests } from "@/lib/db/schema/guest";
-import { users } from "@/lib/db/schema/user";
+// import { guests } from "@/lib/db/schema/guest";
+// import { users } from "@/lib/db/schema/user";
 import { eq, and, inArray } from "drizzle-orm";
 import { guestSession, getCurrentUser, createGuestSession } from "@/lib/auth/actions";
 import { revalidatePath } from "next/cache";
@@ -368,20 +368,20 @@ async function getOrCreateCart(): Promise<{ cartId: string; isGuest: boolean }> 
         .limit(1);
 
       if (guestCart.length) {
-        let userCart = await db
+        const userCart = await db
           .select()
           .from(carts)
           .where(eq(carts.userId, user.id))
           .limit(1);
 
         // Create new user cart if missing
-        if (!userCart.length) {
-          const newUserCart = await db
-            .insert(carts)
-            .values({ userId: user.id })
-            .returning({ id: carts.id });
-          // userCart = [{ id: newUserCart[0].id }];
-        }
+        // if (!userCart.length) {
+        //   const newUserCart = await db
+        //     .insert(carts)
+        //     .values({ userId: user.id })
+        //     .returning({ id: carts.id });
+        //   // userCart = [{ id: newUserCart[0].id }];
+        // }
 
         // Merge guest cart items into user cart
         const guestItems = await db
@@ -417,7 +417,7 @@ async function getOrCreateCart(): Promise<{ cartId: string; isGuest: boolean }> 
     }
 
     // Ensure user has a cart
-    let cart = await db.select().from(carts).where(eq(carts.userId, user.id)).limit(1);
+    const cart = await db.select().from(carts).where(eq(carts.userId, user.id)).limit(1);
     if (!cart.length) {
       const newCart = await db.insert(carts).values({ userId: user.id }).returning({ id: carts.id });
       return { cartId: newCart[0].id, isGuest: false };
@@ -427,7 +427,7 @@ async function getOrCreateCart(): Promise<{ cartId: string; isGuest: boolean }> 
 
   // Guest user
   if (guest?.sessionToken) {
-    let cart = await db.select().from(carts).where(eq(carts.guestId, guest.sessionToken)).limit(1);
+    const cart = await db.select().from(carts).where(eq(carts.guestId, guest.sessionToken)).limit(1);
     if (!cart.length) {
       const newCart = await db.insert(carts).values({ guestId: guest.sessionToken }).returning({ id: carts.id });
       return { cartId: newCart[0].id, isGuest: true };

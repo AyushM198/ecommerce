@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+// import { Inter } from "next/font/google";
 import { Jost } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
@@ -14,7 +14,7 @@ title: "Nike",
 description: "An e-commerce platform for Nike shoes!",
 };
 
-const inter = Inter({ subsets: ["latin"] });
+// const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({
   children,

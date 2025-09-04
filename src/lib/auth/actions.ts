@@ -147,7 +147,7 @@ async function migrateGuestToUser() {
     const guestCartId = guestCart[0].id;
 
     // Get or create user cart
-    let userCart = await db
+    const userCart = await db
       .select()
       .from(carts)
       .where(eq(carts.userId, user.id))

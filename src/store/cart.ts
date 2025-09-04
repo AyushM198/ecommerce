@@ -200,11 +200,33 @@
 //   )
 // );
 
-
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import * as cartActions from "@/lib/actions/cart";
 
+// -------------------- DB TYPES --------------------
+interface DBVariant {
+  id: string;
+  price: string; // price usually comes back as string from DB
+  product?: { name?: string };
+  images?: { url: string }[];
+  size?: { name: string };
+  color?: { name: string };
+}
+
+interface DBCartItem {
+  id: string;
+  productVariantId: string;
+  quantity: number;
+  variant?: DBVariant;
+}
+
+interface DBCart {
+  id: string;
+  items: DBCartItem[];
+}
+
+// -------------------- STORE TYPES --------------------
 interface CartItem {
   id: string;
   productVariantId: string;
@@ -229,6 +251,7 @@ interface CartState {
   getItemCount: () => number;
 }
 
+// -------------------- STORE --------------------
 export const useCartStore = create<CartState>()(
   persist(
     (set, get) => ({
@@ -241,10 +264,11 @@ export const useCartStore = create<CartState>()(
       fetchCart: async () => {
         set({ loading: true, error: null });
         try {
-          const cart = await cartActions.getCart();
+          const cart: DBCart | null = await cartActions.getCart();
+
           if (cart) {
             set({
-              items: cart.items.map((item: any) => ({
+              items: cart.items.map((item) => ({
                 id: item.id,
                 productVariantId: item.productVariantId,
                 quantity: item.quantity,
@@ -255,9 +279,8 @@ export const useCartStore = create<CartState>()(
                 color: item.variant?.color?.name,
               })),
               total: cart.items.reduce(
-                (sum: number, item: any) =>
-                  sum +
-                  parseFloat(item.variant?.price ?? "0") * item.quantity,
+                (sum, item) =>
+                  sum + parseFloat(item.variant?.price ?? "0") * item.quantity,
                 0
               ),
               loading: false,
@@ -265,7 +288,7 @@ export const useCartStore = create<CartState>()(
           } else {
             set({ items: [], total: 0, loading: false });
           }
-        } catch (error) {
+        } catch {
           set({ error: "Failed to fetch cart", loading: false });
         }
       },
@@ -290,7 +313,7 @@ export const useCartStore = create<CartState>()(
               ),
             });
           }
-        } catch (error) {
+        } catch {
           set({
             error: "Failed to add item",
             loading: false,
@@ -323,7 +346,7 @@ export const useCartStore = create<CartState>()(
               ),
             });
           }
-        } catch (error) {
+        } catch {
           set({
             error: "Failed to remove item",
             loading: false,
@@ -356,7 +379,7 @@ export const useCartStore = create<CartState>()(
               ),
             });
           }
-        } catch (error) {
+        } catch {
           set({
             error: "Failed to update quantity",
             loading: false,
@@ -379,7 +402,7 @@ export const useCartStore = create<CartState>()(
           } else {
             set({ error: res.error || "Failed to clear cart", loading: false });
           }
-        } catch (error) {
+        } catch {
           set({ error: "Failed to clear cart", loading: false });
         }
       },

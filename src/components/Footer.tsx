@@ -44,12 +44,12 @@ export default function Footer() {
         </div>
 
         <div>
-          <h4 className="text-white font-semibold mb-3">Kids'</h4>
+          <h4 className="text-white font-semibold mb-3">Kids</h4>
           <ul className="space-y-2 text-sm">
             <li><Link href="/">Infant & Toddler Shoes</Link></li>
-            <li><Link href="/">Kids' Shoes</Link></li>
-            <li><Link href="/">Kids' Jordan Shoes</Link></li>
-            <li><Link href="/">Kids' Basketball Shoes</Link></li>
+            <li><Link href="/">Kids Shoes</Link></li>
+            <li><Link href="/">Kids Jordan Shoes</Link></li>
+            <li><Link href="/">Kids Basketball Shoes</Link></li>
           </ul>
         </div>
       </div>

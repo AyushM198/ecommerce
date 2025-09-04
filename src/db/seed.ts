@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
-import { products, productVariants, colors, sizes, productImages } from "@/lib/db/schema";
-
+import { products, productVariants, colors, sizes,  } from "@/lib/db/schema";
+//
 export async function seedTestData() {
   // Insert colors
   const colorRed = await db.insert(colors).values([{ name: "Red", slug: "red", hexCode: "#FF0000" }]).returning();
@@ -17,20 +17,20 @@ export async function seedTestData() {
   }).returning();
 
   // Insert product variants
-  const variant1 = await db.insert(productVariants).values({
-    productId: product[0].id,
-    sku: "TS-RED-S",
-    price: "100.00",
-    colorId: colorRed[0].id,
-    sizeId: sizeSmall[0].id,
-  }).returning();
+  // const variant1 = await db.insert(productVariants).values({
+  //   productId: product[0].id,
+  //   sku: "TS-RED-S",
+  //   price: "100.00",
+  //   colorId: colorRed[0].id,
+  //   sizeId: sizeSmall[0].id,
+  // }).returning();
 
-  const variant2 = await db.insert(productVariants).values({
-    productId: product[0].id,
-    sku: "TS-BLUE-M",
-    price: "110.00",
-    colorId: colorBlue[0].id,
-    sizeId: sizeMedium[0].id,
-  }).returning();
+  // const variant2 = await db.insert(productVariants).values({
+  //   productId: product[0].id,
+  //   sku: "TS-BLUE-M",
+  //   price: "110.00",
+  //   colorId: colorBlue[0].id,
+  //   sizeId: sizeMedium[0].id,
+  // }).returning();
 
 }
